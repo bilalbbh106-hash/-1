@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم ماسكي</title>
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container" id="login-page">
+        <div class="login-form">
+            <div class="login-header">
+                <h1><i class="fas fa-lock"></i> دخول المدير</h1>
+                <p>لوحة تحكم متجر ماسكي</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
+                    <div class="password-toggle">
+                        <i class="fas fa-eye" id="toggle-password"></i>
+                    </div>
+                </div>
+                <button type="submit" class="login-btn">دخول <i class="fas fa-sign-in-alt"></i></button>
+                <div class="login-error" id="login-error"></div>
+            </form>
+            <div class="login-footer">
+                <p>كلمة المرور الافتراضية: <code>Maski2026</code></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-container" id="dashboard" style="display: none;">
+        <!-- رأس لوحة التحكم -->
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <div class="admin-logo">
+                    <h1><i class="fas fa-crown"></i> ماسكي - لوحة التحكم</h1>
+                </div>
+                <div class="admin-actions">
+                    <button class="btn btn-secondary" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="admin-main">
+            <!-- الشريط الجانبي -->
+            <aside class="admin-sidebar">
+                <nav class="admin-nav">
+                    <ul>
+                        <li><a href="#dashboard-content" class="active"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</a></li>
+                        <li><a href="#add-post"><i class="fas fa-plus-circle"></i> إضافة منشور</a></li>
+                        <li><a href="#manage-posts"><i class="fas fa-edit"></i> إدارة المنشورات</a></li>
+                        <li><a href="#manage-products"><i class="fas fa-box"></i> إدارة المنتجات</a></li>
+                        <li><a href="#manage-contests"><i class="fas fa-trophy"></i> إدارة المسابقات</a></li>
+                        <li><a href="#site-settings"><i class="fas fa-cog"></i> إعدادات الموقع</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="admin-stats">
+                    <h3><i class="fas fa-chart-bar"></i> إحصائيات سريعة</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-posts">0</div>
+                            <div class="stat-label">المنشورات</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-products">0</div>
+                            <div class="stat-label">المنتجات</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-contests">0</div>
+                            <div class="stat-label">المسابقات</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- المحتوى -->
+            <main class="admin-content">
+                <!-- قسم لوحة التحكم -->
+                <section id="dashboard-content" class="content-section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tachometer-alt"></i> نظرة عامة</h2>
+                        <p>مرحباً بك في لوحة تحكم متجر ماسكي</p>
+                    </div>
+                    
+                    <div class="welcome-card">
+                        <div class="welcome-content">
+                            <h3>مرحباً بك في نظام إدارة المحتوى</h3>
+                            <p>من هنا يمكنك إدارة جميع محتويات متجر ماسكي بسهولة. يمكنك إضافة منتجات جديدة، إنشاء منشورات، إدارة المسابقات وتعديل إعدادات الموقع.</p>
+                            <div class="quick-actions">
+                                <a href="#add-post" class="btn btn-primary"><i class="fas fa-plus-circle"></i> إضافة منشور جديد</a>
+                                <a href="#manage-products" class="btn btn-secondary"><i class="fas fa-box"></i> إدارة المنتجات</a>
+                            </div>
+                        </div>
+                        <div class="welcome-image">
+                            <i class="fas fa-store-alt"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-activity">
+                        <h3><i class="fas fa-history"></i> النشاط الأخير</h3>
+                        <div class="activity-list" id="activity-list">
+                            <!-- سيتم تحميل النشاطات ديناميكياً -->
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-plus-circle"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p>لم تقم بأي نشاط بعد. ابدأ بإضافة أول منشور لك.</p>
+                                </div>
+                                <div class="activity-time">الآن</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- قسم إضافة منشور -->
+                <section id="add-post" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-plus-circle"></i> إضافة منشور جديد</h2>
+                        <p>أضف منشوراً جديداً إلى أحد أقسام المتجر</p>
+                    </div>
+                    
+                    <form id="add-post-form">
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="post-title">عنوان المنشور</label>
+                                <input type="text" id="post-title" placeholder="أدخل عنواناً جذاباً للمنشور" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="post-category">القسم</label>
+                                <select id="post-category" required>
+                                    <option value="">اختر القسم</option>
+                                    <option value="1">حسابات فري فاير</option>
+                                    <option value="2">عروض الشحن</option>
+                                    <option value="3">خدمات وسائل التواصل</option>
+                                    <option value="4">المسابقات</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="post-price">السعر (ريال سعودي)</label>
+                                <input type="text" id="post-price" placeholder="مثال: 199 ر.س">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="post-description">وصف المنشور</label>
+                                <textarea id="post-description" rows="6" placeholder="أدخل وصفاً تفصيلياً للمنتج أو الخدمة" required></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="post-images">رفع الصور (حد أقصى 7 صور)</label>
+                                <div class="image-upload-container">
+                                    <div class="image-upload-area" id="image-drop-area">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>اسحب وأفلت الصور هنا أو انقر للاختيار</p>
+                                        <small>يسمح بـ 7 صور كحد أقصى. الأنواع المسموحة: JPG, PNG, GIF</small>
+                                        <input type="file" id="post-images-input" multiple accept="image/*" style="display: none;">
+                                    </div>
+                                    <div class="image-preview" id="image-preview">
+                                        <!-- سيتم عرض معاينة الصور هنا -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> نشر المنشور
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="reset-form">
+                                <i class="fas fa-redo"></i> مسح النموذج
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- قسم إدارة المنشورات -->
+                <section id="manage-posts" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-edit"></i> إدارة المنشورات</h2>
+                        <p>عرض وتعديل وحذف المنشورات المنشورة</p>
+                    </div>
+                    
+                    <div class="posts-filter">
+                        <select id="filter-category">
+                            <option value="all">جميع الأقسام</option>
+                            <option value="1">حسابات فري فاير</option>
+                            <option value="2">عروض الشحن</option>
+                            <option value="3">خدمات وسائل التواصل</option>
+                            <option value="4">المسابقات</option>
+                        </select>
+                        <input type="text" id="search-posts" placeholder="ابحث في المنشورات...">
+                    </div>
+                    
+                    <div class="posts-table-container">
+                        <table class="posts-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>الصورة</th>
+                                    <th>العنوان</th>
+                                    <th>القسم</th>
+                                    <th>السعر</th>
+                                    <th>التاريخ</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="posts-table-body">
+                                <!-- سيتم تحميل المنشورات ديناميكياً -->
+                                <tr>
+                                    <td colspan="7" class="no-data">لا توجد منشورات بعد. أضف أول منشور من قسم "إضافة منشور".</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination" id="posts-pagination">
+                        <!-- سيتم إضافة ترقيم الصفحات ديناميكياً -->
+                    </div>
+                </section>
+
+                <!-- قسم إدارة المنتجات -->
+                <section id="manage-products" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-box"></i> إدارة المنتجات</h2>
+                        <p>عرض وتعديل المنتجات المتاحة في المتجر</p>
+                    </div>
+                    
+                    <div class="products-grid-admin" id="products-grid-admin">
+                        <!-- سيتم تحميل المنتجات ديناميكياً -->
+                    </div>
+                    
+                    <div class="section-actions">
+                        <a href="#add-post" class="btn btn-primary">
+                            <i class="fas fa-plus-circle"></i> إضافة منتج جديد
+                        </a>
+                    </div>
+                </section>
+
+                <!-- قسم إدارة المسابقات -->
+                <section id="manage-contests" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-trophy"></i> إدارة المسابقات</h2>
+                        <p>إضافة وتعديل مسابقات المتجر</p>
+                    </div>
+                    
+                    <div class="contests-list" id="contests-list-admin">
+                        <!-- سيتم تحميل المسابقات ديناميكياً -->
+                    </div>
+                    
+                    <div class="section-actions">
+                        <button class="btn btn-primary" id="add-contest-btn">
+                            <i class="fas fa-plus-circle"></i> إضافة مسابقة جديدة
+                        </button>
+                    </div>
+                </section>
+
+                <!-- قسم إعدادات الموقع -->
+                <section id="site-settings" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-cog"></i> إعدادات الموقع</h2>
+                        <p>تعديل إعدادات متجر ماسكي</p>
+                    </div>
+                    
+                    <form id="site-settings-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="site-title">اسم المتجر</label>
+                                <input type="text" id="site-title" value="ماسكي" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="admin-password">كلمة مرور المدير</label>
+                                <input type="password" id="admin-password" placeholder="اتركه فارغاً إذا لم ترد التغيير">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="site-description">وصف المتجر</label>
+                                <textarea id="site-description" rows="4">متجر الخدمات الرقمية المتميزة</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-phone">رقم التواصل</label>
+                                <input type="text" id="contact-phone" value="+966 123 456 789">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-email">البريد الإلكتروني</label>
+                                <input type="email" id="contact-email" value="info@maski-store.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label>إعلانات A-ADS</label>
+                                <textarea id="a-ads-code" rows="3" placeholder="أدخل كود A-ADS هنا"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label>إعلانات Adstera</label>
+                                <textarea id="adstera-code" rows="3" placeholder="أدخل كود Adstera هنا"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> حفظ الإعدادات
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
+
+        <!-- تذييل لوحة التحكم -->
+        <footer class="admin-footer">
+            <p>© 2026 ماسكي - لوحة التحكم | الإصدار 1.0</p>
+        </footer>
+    </div>
+
+    <!-- نافذة تعديل المسابقة -->
+    <div class="modal" id="contest-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-trophy"></i> إضافة/تعديل مسابقة</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="contest-form">
+                    <input type="hidden" id="contest-id">
+                    <div class="form-group">
+                        <label for="contest-title">عنوان المسابقة</label>
+                        <input type="text" id="contest-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contest-date">تاريخ الانتهاء</label>
+                        <input type="text" id="contest-date" placeholder="مثال: 15 ديسمبر 2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contest-description">وصف المسابقة</label>
+                        <textarea id="contest-description" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contest-prize">الجائزة</label>
+                        <input type="text" id="contest-prize" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">حفظ المسابقة</button>
+                        <button type="button" class="btn btn-secondary modal-close">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>
