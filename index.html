@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ماسكي - متجر الخدمات الإلكترونية</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+</head>
+<body>
+    <!-- رأس الصفحة -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo-container">
+                <h1 class="logo" id="maski-logo">ماسكي</h1>
+                <p class="tagline">متجر الخدمات الرقمية المتميزة</p>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home" class="active">الرئيسية</a></li>
+                    <li><a href="#categories">الأقسام</a></li>
+                    <li><a href="#featured">العروض المميزة</a></li>
+                    <li><a href="#how-to">كيفية الشراء</a></li>
+                    <li><a href="#contact">اتصل بنا</a></li>
+                    <li><a href="admin.html" class="admin-link"><i class="fas fa-lock"></i> لوحة التحكم</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- القسم الرئيسي -->
+    <main>
+        <!-- الهيرو -->
+        <section class="hero-section" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h2 class="hero-title">مرحباً بكم في <span class="highlight">ماسكي</span></h2>
+                    <p class="hero-subtitle">متجر الخدمات الرقمية الأسرع نمواً في العالم العربي</p>
+                    <a href="#categories" class="cta-button">استعرض الأقسام <i class="fas fa-arrow-left"></i></a>
+                </div>
+                <div class="hero-image">
+                    <div class="floating-card">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>حسابات فري فاير</h3>
+                        <p>أفضل الحسابات بأرخص الأسعار</p>
+                    </div>
+                    <div class="floating-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3>عروض الشحن</h3>
+                        <p>شحن رصيد بخصومات تصل لـ 30%</p>
+                    </div>
+                    <div class="floating-card">
+                        <i class="fas fa-users"></i>
+                        <h3>خدمات التواصل</h3>
+                        <p>تعزيز حسابات السوشيال ميديا</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- إعلانات A-ADS -->
+        <section class="ads-section">
+            <div class="container">
+                <div class="ad-container" id="a-ads-banner">
+                    <!-- سيتم إدراج إعلان A-ADS هنا -->
+                    <div class="ad-placeholder">
+                        <p>إعلان A-ADS</p>
+                        <small>728x90 بكسل</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- أقسام المتجر -->
+        <section class="categories-section" id="categories">
+            <div class="section-header">
+                <h2 class="section-title">أقسام المتجر</h2>
+                <p class="section-subtitle">اختر القسم الذي تريده</p>
+            </div>
+            
+            <div class="categories-container">
+                <button class="nav-btn prev-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <div class="categories-slider">
+                    <div class="categories-track" id="categories-track">
+                        <!-- سيتم تحميل الأقسام ديناميكياً -->
+                    </div>
+                </div>
+                
+                <button class="nav-btn next-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            
+            <div class="categories-dots" id="categories-dots">
+                <!-- سيتم إنشاء النقاط ديناميكياً -->
+            </div>
+        </section>
+
+        <!-- المحتوى حسب القسم -->
+        <section class="content-section">
+            <div class="container">
+                <div class="content-header">
+                    <h2 class="content-title" id="section-title">حسابات فري فاير</h2>
+                    <div class="content-filter">
+                        <select id="content-filter">
+                            <option value="all">جميع المنتجات</option>
+                            <option value="new">الأحدث</option>
+                            <option value="price-low">السعر: من الأقل للأعلى</option>
+                            <option value="price-high">السعر: من الأعلى للأقل</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="products-grid" id="products-grid">
+                    <!-- سيتم تحميل المنتجات ديناميكياً -->
+                </div>
+                
+                <div class="load-more-container">
+                    <button class="load-more-btn" id="load-more">تحميل المزيد</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- إعلانات Adstera -->
+        <section class="ads-section">
+            <div class="container">
+                <div class="ad-container" id="adstera-sidebar">
+                    <!-- سيتم إدراج إعلان Adstera هنا -->
+                    <div class="ad-placeholder">
+                        <p>إعلان Adstera</p>
+                        <small>300x250 بكسل</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- كيفية الشراء -->
+        <section class="how-to-section" id="how-to">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">كيفية الشراء</h2>
+                    <p class="section-subtitle">3 خطوات بسيطة للحصول على منتجاتك</p>
+                </div>
+                
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <i class="fas fa-search step-icon"></i>
+                        <h3 class="step-title">اختر المنتج</h3>
+                        <p class="step-description">تصفح الأقسام واختر المنتج الذي يناسبك</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <i class="fas fa-shopping-cart step-icon"></i>
+                        <h3 class="step-title">اتصل بالبائع</h3>
+                        <p class="step-description">اتصل بالبائع عبر الواتساب لاستكمال الشراء</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <i class="fas fa-box step-icon"></i>
+                        <h3 class="step-title">استلم منتجك</h3>
+                        <p class="step-description">استلم المنتج فور تأكيد عملية الدفع</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- المسابقات -->
+        <section class="contests-section" id="contests">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">المسابقات</h2>
+                    <p class="section-subtitle">شارك في مسابقاتنا واربح جوائز قيمة</p>
+                </div>
+                
+                <div class="contests-container" id="contests-container">
+                    <!-- سيتم تحميل المسابقات ديناميكياً -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="main-footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 class="footer-logo">ماسكي</h3>
+                    <p class="footer-description">متجر الخدمات الرقمية المتميزة الذي يقدم أفضل الحلول لعملائه في جميع أنحاء العالم العربي.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">روابط سريعة</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#categories">الأقسام</a></li>
+                        <li><a href="#featured">العروض المميزة</a></li>
+                        <li><a href="#how-to">كيفية الشراء</a></li>
+                        <li><a href="#contests">المسابقات</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">الأقسام</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" data-category="1">حسابات فري فاير</a></li>
+                        <li><a href="#" data-category="2">عروض الشحن</a></li>
+                        <li><a href="#" data-category="3">خدمات وسائل التواصل</a></li>
+                        <li><a href="#" data-category="4">المسابقات</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4 class="footer-title">اتصل بنا</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> info@maski-store.com</li>
+                        <li><i class="fas fa-phone"></i> +966 123 456 789</li>
+                        <li><i class="fas fa-map-marker-alt"></i> المملكة العربية السعودية</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2026 ماسكي. جميع الحقوق محفوظة.</p>
+                <div class="footer-ads">
+                    <!-- إعلان Adstera -->
+                    <div class="small-ad" id="adstera-footer">
+                        <div class="ad-placeholder small">
+                            <p>إعلان Adstera</p>
+                            <small>468x60 بكسل</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- نافذة تفاصيل المنتج -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-body" id="modal-body">
+                <!-- سيتم تحميل تفاصيل المنتج هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- التحميل -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">م</div>
+            <p>جاري التحميل...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
