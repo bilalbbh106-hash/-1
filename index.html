@@ -3,275 +3,461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ماسكي - متجر الخدمات الإلكترونية</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>ماسكي - متجر المنتجات الرقمية الذكي</title>
+    
+    <!-- الروابط الأساسية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    
+    <!-- أنماط الموقع -->
+    <style>
+        /* الأنماط الأساسية */
+        :root {
+            --primary: #6d28d9;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        
+        /* الشعار ماسكي */
+        .logo {
+            font-family: 'Cairo', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            border-radius: 3px;
+        }
+        
+        /* التصميم الرئيسي */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* الهيدر */
+        header {
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 20px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* القائمة */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* القسم البطولي */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-100px) translateX(-100px); }
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+        
+        /* الأقسام المنزلقة */
+        .categories-slider {
+            padding: 50px 0;
+            position: relative;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: var(--primary);
+        }
+        
+        .category-card i {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        /* المنتجات */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 0;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* الفوتر */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 100px;
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.5rem; }
+            nav ul { flex-direction: column; gap: 10px; }
+            .products-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-    <!-- رأس الصفحة -->
-    <header class="main-header">
+    <!-- الهيدر -->
+    <header>
         <div class="container">
-            <div class="logo-container">
-                <h1 class="logo" id="maski-logo">ماسكي</h1>
-                <p class="tagline">متجر الخدمات الرقمية المتميزة</p>
+            <div class="header-content">
+                <div class="logo">ماسكي</div>
+                <nav>
+                    <ul>
+                        <li><a href="#home" class="active">الرئيسية</a></li>
+                        <li><a href="#products">المنتجات</a></li>
+                        <li><a href="#categories">الأقسام</a></li>
+                        <li><a href="#how-to">كيفية الشراء</a></li>
+                        <li><a href="admin.html" style="background: var(--accent);">لوحة التحكم</a></li>
+                    </ul>
+                </nav>
             </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#home" class="active">الرئيسية</a></li>
-                    <li><a href="#categories">الأقسام</a></li>
-                    <li><a href="#featured">العروض المميزة</a></li>
-                    <li><a href="#how-to">كيفية الشراء</a></li>
-                    <li><a href="#contact">اتصل بنا</a></li>
-                    <li><a href="admin.html" class="admin-link"><i class="fas fa-lock"></i> لوحة التحكم</a></li>
-                </ul>
-            </nav>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
         </div>
     </header>
 
-    <!-- القسم الرئيسي -->
-    <main>
-        <!-- الهيرو -->
-        <section class="hero-section" id="home">
-            <div class="container">
-                <div class="hero-content">
-                    <h2 class="hero-title">مرحباً بكم في <span class="highlight">ماسكي</span></h2>
-                    <p class="hero-subtitle">متجر الخدمات الرقمية الأسرع نمواً في العالم العربي</p>
-                    <a href="#categories" class="cta-button">استعرض الأقسام <i class="fas fa-arrow-left"></i></a>
-                </div>
-                <div class="hero-image">
-                    <div class="floating-card">
-                        <i class="fas fa-gamepad"></i>
-                        <h3>حسابات فري فاير</h3>
-                        <p>أفضل الحسابات بأرخص الأسعار</p>
-                    </div>
-                    <div class="floating-card">
-                        <i class="fas fa-bolt"></i>
-                        <h3>عروض الشحن</h3>
-                        <p>شحن رصيد بخصومات تصل لـ 30%</p>
-                    </div>
-                    <div class="floating-card">
-                        <i class="fas fa-users"></i>
-                        <h3>خدمات التواصل</h3>
-                        <p>تعزيز حسابات السوشيال ميديا</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- إعلانات A-ADS -->
-        <section class="ads-section">
-            <div class="container">
-                <div class="ad-container" id="a-ads-banner">
-                    <!-- سيتم إدراج إعلان A-ADS هنا -->
-                    <div class="ad-placeholder">
-                        <p>إعلان A-ADS</p>
-                        <small>728x90 بكسل</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- أقسام المتجر -->
-        <section class="categories-section" id="categories">
-            <div class="section-header">
-                <h2 class="section-title">أقسام المتجر</h2>
-                <p class="section-subtitle">اختر القسم الذي تريده</p>
-            </div>
-            
-            <div class="categories-container">
-                <button class="nav-btn prev-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                
-                <div class="categories-slider">
-                    <div class="categories-track" id="categories-track">
-                        <!-- سيتم تحميل الأقسام ديناميكياً -->
-                    </div>
-                </div>
-                
-                <button class="nav-btn next-btn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            </div>
-            
-            <div class="categories-dots" id="categories-dots">
-                <!-- سيتم إنشاء النقاط ديناميكياً -->
-            </div>
-        </section>
-
-        <!-- المحتوى حسب القسم -->
-        <section class="content-section">
-            <div class="container">
-                <div class="content-header">
-                    <h2 class="content-title" id="section-title">حسابات فري فاير</h2>
-                    <div class="content-filter">
-                        <select id="content-filter">
-                            <option value="all">جميع المنتجات</option>
-                            <option value="new">الأحدث</option>
-                            <option value="price-low">السعر: من الأقل للأعلى</option>
-                            <option value="price-high">السعر: من الأعلى للأقل</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="products-grid" id="products-grid">
-                    <!-- سيتم تحميل المنتجات ديناميكياً -->
-                </div>
-                
-                <div class="load-more-container">
-                    <button class="load-more-btn" id="load-more">تحميل المزيد</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- إعلانات Adstera -->
-        <section class="ads-section">
-            <div class="container">
-                <div class="ad-container" id="adstera-sidebar">
-                    <!-- سيتم إدراج إعلان Adstera هنا -->
-                    <div class="ad-placeholder">
-                        <p>إعلان Adstera</p>
-                        <small>300x250 بكسل</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- كيفية الشراء -->
-        <section class="how-to-section" id="how-to">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">كيفية الشراء</h2>
-                    <p class="section-subtitle">3 خطوات بسيطة للحصول على منتجاتك</p>
-                </div>
-                
-                <div class="steps-container">
-                    <div class="step-card">
-                        <div class="step-number">1</div>
-                        <i class="fas fa-search step-icon"></i>
-                        <h3 class="step-title">اختر المنتج</h3>
-                        <p class="step-description">تصفح الأقسام واختر المنتج الذي يناسبك</p>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-number">2</div>
-                        <i class="fas fa-shopping-cart step-icon"></i>
-                        <h3 class="step-title">اتصل بالبائع</h3>
-                        <p class="step-description">اتصل بالبائع عبر الواتساب لاستكمال الشراء</p>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-number">3</div>
-                        <i class="fas fa-box step-icon"></i>
-                        <h3 class="step-title">استلم منتجك</h3>
-                        <p class="step-description">استلم المنتج فور تأكيد عملية الدفع</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- المسابقات -->
-        <section class="contests-section" id="contests">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">المسابقات</h2>
-                    <p class="section-subtitle">شارك في مسابقاتنا واربح جوائز قيمة</p>
-                </div>
-                
-                <div class="contests-container" id="contests-container">
-                    <!-- سيتم تحميل المسابقات ديناميكياً -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- تذييل الصفحة -->
-    <footer class="main-footer" id="contact">
+    <!-- القسم البطولي -->
+    <section class="hero" id="home">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3 class="footer-logo">ماسكي</h3>
-                    <p class="footer-description">متجر الخدمات الرقمية المتميزة الذي يقدم أفضل الحلول لعملائه في جميع أنحاء العالم العربي.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
+            <h1>متجر <span class="logo">ماسكي</span> الرقمي</h1>
+            <p style="font-size: 1.5rem; margin-bottom: 30px; opacity: 0.9;">
+                أكبر منصة لبيع المنتجات الرقمية والخدمات بأفضل الأسعار
+            </p>
+            <a href="#products" style="
+                display: inline-block;
+                background: white;
+                color: var(--primary);
+                padding: 15px 40px;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 1.2rem;
+                box-shadow: var(--shadow);
+                transition: all 0.3s ease;
+                margin-top: 20px;
+            ">استعرض المنتجات</a>
+        </div>
+    </section>
+
+    <!-- إعلان A-ADS -->
+    <div class="container" style="margin: 40px auto; text-align: center;">
+        <div id="a-ads-banner" style="
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            <!-- سيتم وضع كود A-ADS هنا -->
+            <div style="color: #666; font-size: 1.2rem;">
+                <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>إعلان A-ADS</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- الأقسام -->
+    <section id="categories" class="categories-slider">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 50px; color: var(--dark);">
+                <i class="fas fa-th-large"></i> أقسام المتجر
+            </h2>
+            
+            <div class="products-grid" id="categories-container">
+                <!-- سيتم تحميل الأقسام ديناميكياً -->
+            </div>
+        </div>
+    </section>
+
+    <!-- المنتجات -->
+    <section id="products" style="padding: 50px 0; background: #f1f5f9;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2.5rem; color: var(--dark);">
+                    <i class="fas fa-box"></i> أحدث المنتجات
+                </h2>
+                <select id="category-filter" style="
+                    padding: 12px 25px;
+                    border-radius: 50px;
+                    border: 2px solid #ddd;
+                    background: white;
+                    font-size: 1.1rem;
+                    color: var(--dark);
+                    cursor: pointer;
+                ">
+                    <option value="all">جميع الأقسام</option>
+                </select>
+            </div>
+            
+            <div class="products-grid" id="products-container">
+                <!-- سيتم تحميل المنتجات ديناميكياً -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <button id="load-more" style="
+                    padding: 15px 50px;
+                    background: var(--primary);
+                    color: white;
+                    border: none;
+                    border-radius: 50px;
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">تحميل المزيد</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- إعلان Adstera -->
+    <div class="container" style="margin: 40px auto; text-align: center;">
+        <div id="adstera-sidebar" style="
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            <!-- سيتم وضع كود Adstera هنا -->
+            <div style="color: #666; font-size: 1.2rem;">
+                <i class="fas fa-advertisement" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>إعلان Adstera</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- كيفية الشراء -->
+    <section id="how-to" style="padding: 80px 0; background: white;">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 50px; color: var(--dark);">
+                <i class="fas fa-shopping-cart"></i> كيفية الشراء
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div style="text-align: center; padding: 40px 30px; background: #f8fafc; border-radius: var(--radius);">
+                    <div style="
+                        width: 80px;
+                        height: 80px;
+                        background: var(--primary);
+                        color: white;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 2rem;
+                        margin: 0 auto 20px;
+                    ">1</div>
+                    <h3 style="margin-bottom: 15px;">اختر المنتج</h3>
+                    <p>تصفح الأقسام واختر المنتج الذي يناسبك</p>
                 </div>
                 
-                <div class="footer-col">
-                    <h4 class="footer-title">روابط سريعة</h4>
-                    <ul class="footer-links">
-                        <li><a href="#home">الرئيسية</a></li>
-                        <li><a href="#categories">الأقسام</a></li>
-                        <li><a href="#featured">العروض المميزة</a></li>
-                        <li><a href="#how-to">كيفية الشراء</a></li>
-                        <li><a href="#contests">المسابقات</a></li>
+                <div style="text-align: center; padding: 40px 30px; background: #f8fafc; border-radius: var(--radius);">
+                    <div style="
+                        width: 80px;
+                        height: 80px;
+                        background: var(--secondary);
+                        color: white;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 2rem;
+                        margin: 0 auto 20px;
+                    ">2</div>
+                    <h3 style="margin-bottom: 15px;">ادفع بسهولة</h3>
+                    <p>ادفع باستخدام العملات المشفرة أو البطاقات</p>
+                </div>
+                
+                <div style="text-align: center; padding: 40px 30px; background: #f8fafc; border-radius: var(--radius);">
+                    <div style="
+                        width: 80px;
+                        height: 80px;
+                        background: var(--accent);
+                        color: white;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 2rem;
+                        margin: 0 auto 20px;
+                    ">3</div>
+                    <h3 style="margin-bottom: 15px;">استلم فوراً</h3>
+                    <p>استلم المنتج الرقمي فور اكتمال الدفع</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 50px;">
+                <div>
+                    <div class="logo" style="font-size: 2.5rem;">ماسكي</div>
+                    <p style="margin-top: 20px; opacity: 0.8;">أفضل متجر للمنتجات الرقمية في العالم العربي</p>
+                </div>
+                
+                <div>
+                    <h3 style="margin-bottom: 20px; font-size: 1.5rem;">روابط سريعة</h3>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 10px;"><a href="#home" style="color: #ccc; text-decoration: none;">الرئيسية</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#products" style="color: #ccc; text-decoration: none;">المنتجات</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#categories" style="color: #ccc; text-decoration: none;">الأقسام</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#how-to" style="color: #ccc; text-decoration: none;">كيفية الشراء</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-col">
-                    <h4 class="footer-title">الأقسام</h4>
-                    <ul class="footer-links">
-                        <li><a href="#" data-category="1">حسابات فري فاير</a></li>
-                        <li><a href="#" data-category="2">عروض الشحن</a></li>
-                        <li><a href="#" data-category="3">خدمات وسائل التواصل</a></li>
-                        <li><a href="#" data-category="4">المسابقات</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h4 class="footer-title">اتصل بنا</h4>
-                    <ul class="footer-contact">
-                        <li><i class="fas fa-envelope"></i> info@maski-store.com</li>
-                        <li><i class="fas fa-phone"></i> +966 123 456 789</li>
-                        <li><i class="fas fa-map-marker-alt"></i> المملكة العربية السعودية</li>
-                    </ul>
+                <div>
+                    <h3 style="margin-bottom: 20px; font-size: 1.5rem;">تواصل معنا</h3>
+                    <p style="margin-bottom: 10px; opacity: 0.8;"><i class="fas fa-phone"></i> +966 123 456 789</p>
+                    <p style="margin-bottom: 10px; opacity: 0.8;"><i class="fas fa-envelope"></i> info@maski.store</p>
                 </div>
             </div>
             
-            <div class="footer-bottom">
-                <p class="copyright">© 2026 ماسكي. جميع الحقوق محفوظة.</p>
-                <div class="footer-ads">
-                    <!-- إعلان Adstera -->
-                    <div class="small-ad" id="adstera-footer">
-                        <div class="ad-placeholder small">
-                            <p>إعلان Adstera</p>
-                            <small>468x60 بكسل</small>
-                        </div>
-                    </div>
+            <!-- إعلان Adstera في الفوتر -->
+            <div id="adstera-footer" style="
+                text-align: center;
+                padding: 20px;
+                background: rgba(255,255,255,0.1);
+                border-radius: var(--radius);
+                margin: 30px 0;
+            ">
+                <!-- سيتم وضع كود Adstera هنا -->
+                <div style="color: #ccc; font-size: 1rem;">
+                    <i class="fas fa-ad" style="margin-bottom: 10px;"></i>
+                    <p>إعلان Adstera</p>
                 </div>
+            </div>
+            
+            <div style="text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p>© 2024 ماسكي. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
 
-    <!-- نافذة تفاصيل المنتج -->
-    <div class="modal" id="product-modal">
-        <div class="modal-content">
-            <button class="modal-close"><i class="fas fa-times"></i></button>
-            <div class="modal-body" id="modal-body">
-                <!-- سيتم تحميل تفاصيل المنتج هنا -->
-            </div>
-        </div>
-    </div>
-
-    <!-- التحميل -->
-    <div class="loader" id="loader">
-        <div class="loader-content">
-            <div class="loader-logo">م</div>
-            <p>جاري التحميل...</p>
-        </div>
-    </div>
-
+    <!-- المكتبات -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+   <!-- ملفاتنا -->
+    <script src="supabase-config.js"></script>
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
