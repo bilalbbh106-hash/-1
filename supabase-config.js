@@ -1,8 +1,8 @@
 // تكوين Supabase
 // استبدل هذه القيم بمعلومات مشروع Supabase الفعلي الخاص بك
 
-const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key';
+const SUPABASE_URL = 'https://jdiljlwdnynzngbqlkqp.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_aSfEU4eWVbudVM-3O-hKAQ__Ukcg0PN';
 
 // تهيئة عميل Supabase
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
