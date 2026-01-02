@@ -1,629 +1,346 @@
-// تهيئة الموقع
-document.addEventListener('DOMContentLoaded', function() {
-    // إخفاء شاشة التحميل بعد 2 ثانية
-    setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-    }, 2000);
-
-    // تهيئة بيانات المتجر
-    initStore();
+// متجر ماسكي - الملف الرئيسي
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 متجر ماسكي جاهز للتشغيل');
     
-    // تهيئة الأقسام القابلة للسحب
-    initCategoriesSlider();
+    // تهيئة الموقع
+    await initStore();
     
-    // تحميل المنتجات
-    loadProducts();
+    // تحميل الأقسام والمنتجات
+    await loadCategories();
+    await loadProducts();
     
-    // تحميل المسابقات
-    loadContests();
+    // إعداد الأحداث
+    setupEvents();
     
-    // تهيئة القائمة المتحركة للهواتف
-    initMobileMenu();
-    
-    // تهيئة الأحداث
-    initEvents();
-    
-    // إدراج الإعلانات
-    insertAds();
+    // تحميل الإعلانات
+    loadAds();
 });
 
-// بيانات المتجر
-const storeData = {
-    categories: [
-        {
-            id: 1,
-            name: "حسابات فري فاير",
-            icon: "fas fa-gamepad",
-            description: "أفضل الحسابات بأعلى المستويات وأرخص الأسعار",
-            color: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)"
-        },
-        {
-            id: 2,
-            name: "عروض الشحن",
-            icon: "fas fa-bolt",
-            description: "عروض شحن رصيد مميزة بخصومات تصل إلى 30%",
-            color: "linear-gradient(135deg, #ff4d94 0%, #ff8e53 100%)"
-        },
-        {
-            id: 3,
-            name: "خدمات وسائل التواصل",
-            icon: "fas fa-users",
-            description: "تعزيز ورفع متابعين لحسابات السوشيال ميديا",
-            color: "linear-gradient(135deg, #00b09b 0%, #96c93d 100%)"
-        },
-        {
-            id: 4,
-            name: "المسابقات",
-            icon: "fas fa-trophy",
-            description: "شارك في مسابقاتنا واربح جوائز قيمة",
-            color: "linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%)"
-        }
-    ],
-    products: [
-        {
-            id: 1,
-            categoryId: 1,
-            title: "حساب فري فاير مستوى 70",
-            description: "حساب فري فاير مميز بمستوى 70 مع 10 أبطال نادرين و20000 ماسة",
-            price: "299 ر.س",
-            image: "https://via.placeholder.com/400x300/6a11cb/ffffff?text=Free+Fire+Account",
-            badge: "الأكثر طلباً"
-        },
-        {
-            id: 2,
-            categoryId: 1,
-            title: "حساب فري فاير مستوى 50",
-            description: "حساب فري فاير بمستوى 50 مع 5 أبطال و10000 ماسة",
-            price: "199 ر.س",
-            image: "https://via.placeholder.com/400x300/2575fc/ffffff?text=Free+Fire+Account",
-            badge: "عرض خاص"
-        },
-        {
-            id: 3,
-            categoryId: 2,
-            title: "شحن رصيد STC 100 ريال",
-            description: "شحن رصيد STC بقيمة 100 ريال بسعر 90 ريال فقط",
-            price: "90 ر.س",
-            image: "https://via.placeholder.com/400x300/ff4d94/ffffff?text=STC+Charge",
-            badge: "تخفيض 10%"
-        },
-        {
-            id: 4,
-            categoryId: 2,
-            title: "شحن رصيد موبايلي 50 ريال",
-            description: "شحن رصيد موبايلي بقيمة 50 ريال بسعر 45 ريال فقط",
-            price: "45 ر.س",
-            image: "https://via.placeholder.com/400x300/ff8e53/ffffff?text=Mobily+Charge",
-            badge: "تخفيض"
-        },
-        {
-            id: 5,
-            categoryId: 3,
-            title: "1000 متابع انستقرام",
-            description: "زيادة 1000 متابع حقيقي لحساب الانستقرام خلال 24 ساعة",
-            price: "49 ر.س",
-            image: "https://via.placeholder.com/400x300/00b09b/ffffff?text=Instagram+Followers",
-            badge: "سريع"
-        },
-        {
-            id: 6,
-            categoryId: 3,
-            title: "5000 إعجاب فيسبوك",
-            description: "إضافة 5000 إعجاب حقيقي لمنشور الفيسبوك خلال 48 ساعة",
-            price: "79 ر.س",
-            image: "https://via.placeholder.com/400x300/96c93d/ffffff?text=Facebook+Likes",
-            badge: "جديد"
-        },
-        {
-            id: 7,
-            categoryId: 4,
-            title: "مسابقة حساب فري فاير مجاني",
-            description: "شارك في المسابقة لربح حساب فري فاير مستوى 80 مجاناً",
-            price: "مجاني",
-            image: "https://via.placeholder.com/400x300/8e2de2/ffffff?text=Contest+Free",
-            badge: "مجاني"
-        },
-        {
-            id: 8,
-            categoryId: 4,
-            title: "مسابقة 1000 ريال نقداً",
-            description: "شارك في المسابقة لربح 1000 ريال نقداً",
-            price: "مجاني",
-            image: "https://via.placeholder.com/400x300/4a00e0/ffffff?text=Contest+1000",
-            badge: "جائزة كبرى"
-        }
-    ],
-    contests: [
-        {
-            id: 1,
-            title: "مسابقة حساب فري فاير مجاني",
-            date: "ينتهي في 15 ديسمبر 2026",
-            description: "شارك في المسابقة لربح حساب فري فاير مستوى 80 مع جميع الأبطال النادرين و 50000 ماسة مجاناً. المسابقة مفتوحة للجميع وللفوز فقط قم بمشاركة الرابط مع 5 أصدقاء.",
-            prize: "حساب فري فاير مستوى 80",
-            prizeIcon: "fas fa-gamepad"
-        },
-        {
-            id: 2,
-            title: "مسابقة 1000 ريال نقداً",
-            date: "ينتهي في 31 ديسمبر 2026",
-            description: "احصل على فرصة ربح 1000 ريال نقداً. فقط اشترك في قناتنا على التليجرام وقم بدعوة 10 أصدقاء للانضمام. السحب سيكون عشوائياً بين جميع المشاركين.",
-            prize: "1000 ريال نقداً",
-            prizeIcon: "fas fa-money-bill-wave"
-        },
-        {
-            id: 3,
-            title: "مسابقة شحن رصيد مجاني",
-            date: "ينتهي في 10 يناير 2027",
-            description: "شارك في المسابقة لربح شحن رصيد بقيمة 500 ريال لأي شبكة اتصال تختارها. المسابقة سهلة والمشاركة مجانية للجميع.",
-            prize: "500 ريال شحن رصيد",
-            prizeIcon: "fas fa-mobile-alt"
-        }
-    ]
-};
-
 // تهيئة المتجر
-function initStore() {
-    // تحميل الأقسام
-    loadCategories();
+async function initStore() {
+    console.log('🔧 تهيئة المتجر...');
+    
+    // التحقق من اتصال Supabase
+    try {
+        const { data, error } = await supabase
+            .from('categories')
+            .select('count')
+            .limit(1);
+        
+        if (error) throw error;
+        console.log('✅ اتصال Supabase ناجح');
+    } catch (error) {
+        console.error('❌ خطأ في الاتصال:', error);
+    }
 }
 
 // تحميل الأقسام
-function loadCategories() {
-    const categoriesTrack = document.getElementById('categories-track');
-    const categoriesDots = document.getElementById('categories-dots');
+async function loadCategories() {
+    const container = document.getElementById('categories-container');
+    if (!container) return;
     
-    if (!categoriesTrack) return;
-    
-    categoriesTrack.innerHTML = '';
-    categoriesDots.innerHTML = '';
-    
-    storeData.categories.forEach((category, index) => {
-        // إنشاء بطاقة القسم
-        const categoryCard = document.createElement('div');
-        categoryCard.className = 'category-card';
-        categoryCard.style.background = category.color;
-        categoryCard.dataset.categoryId = category.id;
-        categoryCard.innerHTML = `
-            <i class="${category.icon}"></i>
-            <h3>${category.name}</h3>
-            <p>${category.description}</p>
-        `;
+    try {
+        const { data: categories, error } = await supabase
+            .from('categories')
+            .select('*')
+            .order('order');
         
-        categoryCard.addEventListener('click', function() {
-            switchCategory(category.id);
-            updateActiveDot(index);
-        });
+        if (error) throw error;
         
-        categoriesTrack.appendChild(categoryCard);
-        
-        // إنشاء نقطة التنقل
-        const dot = document.createElement('div');
-        dot.className = `dot ${index === 0 ? 'active' : ''}`;
-        dot.dataset.index = index;
-        dot.addEventListener('click', function() {
-            moveToSlide(index);
-            updateActiveDot(index);
-        });
-        
-        categoriesDots.appendChild(dot);
-    });
-}
-
-// تهيئة سلايدر الأقسام
-function initCategoriesSlider() {
-    const track = document.getElementById('categories-track');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
-    const dots = document.querySelectorAll('.dot');
-    
-    if (!track) return;
-    
-    let currentSlide = 0;
-    const slideCount = storeData.categories.length;
-    const slideWidth = 320; // عرض البطاقة + الهوامش
-    
-    // زر التالي
-    if (nextBtn) {
-        nextBtn.addEventListener('click', function() {
-            if (currentSlide < slideCount - 1) {
-                currentSlide++;
-                moveToSlide(currentSlide);
-                updateActiveDot(currentSlide);
-            }
-        });
-    }
-    
-    // زر السابق
-    if (prevBtn) {
-        prevBtn.addEventListener('click', function() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                moveToSlide(currentSlide);
-                updateActiveDot(currentSlide);
-            }
-        });
-    }
-    
-    // نقل السلايدر إلى شريحة محددة
-    window.moveToSlide = function(slideIndex) {
-        currentSlide = slideIndex;
-        const translateX = -slideIndex * slideWidth;
-        track.style.transform = `translateX(${translateX}px)`;
-    };
-    
-    // تحديث النقطة النشطة
-    window.updateActiveDot = function(slideIndex) {
-        dots.forEach((dot, index) => {
-            if (index === slideIndex) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-    };
-    
-    // جعل السلايدر قابلاً للسحب
-    let isDragging = false;
-    let startPos = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    
-    track.addEventListener('mousedown', dragStart);
-    track.addEventListener('touchstart', dragStart);
-    
-    track.addEventListener('mousemove', drag);
-    track.addEventListener('touchmove', drag);
-    
-    track.addEventListener('mouseup', dragEnd);
-    track.addEventListener('touchend', dragEnd);
-    track.addEventListener('mouseleave', dragEnd);
-    
-    function dragStart(e) {
-        if (e.type === 'touchstart') {
-            startPos = e.touches[0].clientX;
-        } else {
-            startPos = e.clientX;
-            e.preventDefault();
+        // تحديث فلتر الأقسام
+        const filter = document.getElementById('category-filter');
+        if (filter) {
+            filter.innerHTML = '<option value="all">جميع الأقسام</option>';
+            categories.forEach(cat => {
+                filter.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+            });
         }
         
-        isDragging = true;
-        track.style.transition = 'none';
-    }
-    
-    function drag(e) {
-        if (!isDragging) return;
+        // عرض الأقسام
+        container.innerHTML = '';
+        categories.forEach(category => {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.innerHTML = `
+                <i class="${category.icon}"></i>
+                <h3 style="margin: 20px 0 10px; font-size: 1.5rem;">${category.name}</h3>
+                <p style="color: #666;">${category.description}</p>
+            `;
+            card.addEventListener('click', () => switchCategory(category.id));
+            container.appendChild(card);
+        });
         
-        let currentPosition;
-        if (e.type === 'touchmove') {
-            currentPosition = e.touches[0].clientX;
-        } else {
-            currentPosition = e.clientX;
-        }
-        
-        currentTranslate = prevTranslate + currentPosition - startPos;
-    }
-    
-    function dragEnd() {
-        if (!isDragging) return;
-        
-        isDragging = false;
-        track.style.transition = 'transform 0.5s ease';
-        
-        const movedBy = currentTranslate - prevTranslate;
-        
-        // إذا كان السحب كبيراً بما يكفي، انتقل إلى الشريحة التالية أو السابقة
-        if (movedBy < -50 && currentSlide < slideCount - 1) {
-            currentSlide++;
-        } else if (movedBy > 50 && currentSlide > 0) {
-            currentSlide--;
-        }
-        
-        moveToSlide(currentSlide);
-        updateActiveDot(currentSlide);
-        prevTranslate = -currentSlide * slideWidth;
+        console.log(`✅ تم تحميل ${categories.length} قسم`);
+    } catch (error) {
+        console.error('❌ خطأ في تحميل الأقسام:', error);
+        container.innerHTML = '<p style="text-align: center; color: #666;">حدث خطأ في تحميل الأقسام</p>';
     }
 }
 
 // تحميل المنتجات
-function loadProducts(categoryId = 1) {
-    const productsGrid = document.getElementById('products-grid');
-    const sectionTitle = document.getElementById('section-title');
+async function loadProducts(categoryId = 'all') {
+    const container = document.getElementById('products-container');
+    if (!container) return;
     
-    if (!productsGrid) return;
-    
-    // تحديث عنوان القسم
-    const category = storeData.categories.find(cat => cat.id == categoryId);
-    if (category && sectionTitle) {
-        sectionTitle.textContent = category.name;
-    }
-    
-    // تصفية المنتجات حسب القسم
-    const filteredProducts = storeData.products.filter(product => product.categoryId == categoryId);
-    
-    // عرض المنتجات
-    displayProducts(filteredProducts);
-}
-
-// عرض المنتجات
-function displayProducts(products) {
-    const productsGrid = document.getElementById('products-grid');
-    
-    if (!productsGrid) return;
-    
-    productsGrid.innerHTML = '';
-    
-    if (products.length === 0) {
-        productsGrid.innerHTML = `
-            <div class="no-products">
-                <i class="fas fa-box-open"></i>
-                <h3>لا توجد منتجات في هذا القسم حالياً</h3>
-                <p>سيتم إضافة منتجات جديدة قريباً</p>
-            </div>
-        `;
-        return;
-    }
-    
-    products.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        productCard.innerHTML = `
-            ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-            <div class="product-image">
-                <img src="${product.image}" alt="${product.title}">
-            </div>
-            <div class="product-content">
-                <h3 class="product-title">${product.title}</h3>
-                <p class="product-description">${product.description}</p>
-                <div class="product-price">${product.price}</div>
-                <button class="product-button" data-product-id="${product.id}">
-                    <i class="fas fa-shopping-cart"></i> اطلب الآن
-                </button>
-            </div>
-        `;
+    try {
+        let query = supabase
+            .from('products')
+            .select('*, categories(name)')
+            .eq('active', true);
         
-        productsGrid.appendChild(productCard);
-    });
-    
-    // إضافة أحداث الأزرار
-    document.querySelectorAll('.product-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.dataset.productId;
-            showProductModal(productId);
-        });
-    });
-}
-
-// تحميل المسابقات
-function loadContests() {
-    const contestsContainer = document.getElementById('contests-container');
-    
-    if (!contestsContainer) return;
-    
-    contestsContainer.innerHTML = '';
-    
-    storeData.contests.forEach(contest => {
-        const contestCard = document.createElement('div');
-        contestCard.className = 'contest-card';
-        contestCard.innerHTML = `
-            <div class="contest-header">
-                <h3 class="contest-title">${contest.title}</h3>
-                <p class="contest-date">${contest.date}</p>
-            </div>
-            <div class="contest-body">
-                <p class="contest-description">${contest.description}</p>
-                <div class="contest-prize">
-                    <i class="${contest.prizeIcon}"></i>
-                    <span>الجائزة: ${contest.prize}</span>
+        if (categoryId !== 'all') {
+            query = query.eq('category_id', categoryId);
+        }
+        
+        const { data: products, error } = await query.order('created_at', { ascending: false }).limit(12);
+        
+        if (error) throw error;
+        
+        // عرض المنتجات
+        container.innerHTML = '';
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div style="padding: 20px;">
+                    <div style="
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        height: 200px;
+                        border-radius: var(--radius);
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-size: 1.5rem;
+                        font-weight: bold;
+                    ">
+                        ${product.title}
+                    </div>
+                    <h3 style="margin-bottom: 10px; font-size: 1.3rem;">${product.title}</h3>
+                    <p style="color: #666; margin-bottom: 15px; height: 60px; overflow: hidden;">
+                        ${product.description}
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">
+                            ${product.price}
+                        </span>
+                        <button class="buy-btn" data-id="${product.id}" style="
+                            background: var(--primary);
+                            color: white;
+                            border: none;
+                            padding: 10px 25px;
+                            border-radius: 50px;
+                            cursor: pointer;
+                            font-weight: bold;
+                            transition: all 0.3s ease;
+                        ">اشتري الآن</button>
+                    </div>
                 </div>
-                <button class="contest-button" data-contest-id="${contest.id}">
-                    <i class="fas fa-trophy"></i> شارك الآن
-                </button>
-            </div>
-        `;
-        
-        contestsContainer.appendChild(contestCard);
-    });
-    
-    // إضافة أحداث أزرار المشاركة
-    document.querySelectorAll('.contest-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const contestId = this.dataset.contestId;
-            alert(`شكراً لمشاركتك في المسابقة ${contestId}! سيتم الإعلان عن الفائزين في التاريخ المحدد.`);
+            `;
+            container.appendChild(card);
         });
-    });
+        
+        console.log(`✅ تم تحميل ${products.length} منتج`);
+        
+        // إضافة أحداث أزرار الشراء
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-id');
+                startPayment(productId);
+            });
+        });
+        
+    } catch (error) {
+        console.error('❌ خطأ في تحميل المنتجات:', error);
+        container.innerHTML = '<p style="text-align: center; color: #666;">حدث خطأ في تحميل المنتجات</p>';
+    }
 }
 
 // تبديل القسم
-function switchCategory(categoryId) {
-    // تحديث الروابط النشطة
-    document.querySelectorAll('.category-card').forEach(card => {
-        if (card.dataset.categoryId == categoryId) {
-            card.classList.add('active');
-        } else {
-            card.classList.remove('active');
-        }
-    });
-    
-    // تحديث الروابط في التذييل
-    document.querySelectorAll('[data-category]').forEach(link => {
-        if (link.dataset.category == categoryId) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-    
-    // تحميل منتجات القسم الجديد
-    loadProducts(categoryId);
+async function switchCategory(categoryId) {
+    console.log(`🔄 تبديل إلى القسم: ${categoryId}`);
+    await loadProducts(categoryId);
 }
 
-// عرض نافذة تفاصيل المنتج
-function showProductModal(productId) {
-    const product = storeData.products.find(p => p.id == productId);
-    if (!product) return;
+// بدء عملية الدفع
+async function startPayment(productId) {
+    console.log(`💳 بدء عملية الدفع للمنتج: ${productId}`);
     
-    const modalBody = document.getElementById('modal-body');
-    const modal = document.getElementById('product-modal');
+    try {
+        // جلب بيانات المنتج
+        const { data: product, error } = await supabase
+            .from('products')
+            .select('*')
+            .eq('id', productId)
+            .single();
+        
+        if (error) throw error;
+        
+        // عرض نافذة الدفع
+        showPaymentModal(product);
+        
+    } catch (error) {
+        console.error('❌ خطأ في بدء الدفع:', error);
+        alert('حدث خطأ في بدء عملية الدفع');
+    }
+}
+
+// عرض نافذة الدفع
+function showPaymentModal(product) {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    `;
     
-    modalBody.innerHTML = `
-        <div class="modal-product">
-            <div class="modal-product-image">
-                <img src="${product.image}" alt="${product.title}">
-            </div>
-            <div class="modal-product-details">
-                <h2>${product.title}</h2>
-                <p class="modal-product-description">${product.description}</p>
-                <div class="modal-product-price">${product.price}</div>
-                <div class="modal-product-info">
-                    <h3>تفاصيل الطلب:</h3>
-                    <ul>
-                        <li>يتم إرسال المنتج خلال 24 ساعة من تأكيد الدفع</li>
-                        <li>للاستفسار أو الطوارئ اتصل على: +966 123 456 789</li>
-                        <li>الدفع عن طريق التحويل البنكي أو الآبل باي</li>
-                    </ul>
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        ">
+            <h2 style="margin-bottom: 20px; color: var(--dark);">إتمام الشراء</h2>
+            <p style="margin-bottom: 20px; color: #666;">${product.title}</p>
+            <p style="font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 30px;">
+                ${product.price}
+            </p>
+            
+            <div id="payment-methods" style="margin-bottom: 30px;">
+                <h3 style="margin-bottom: 15px;">اختر طريقة الدفع</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                    <button class="pay-method" data-method="crypto" style="
+                        padding: 15px;
+                        border: 2px solid #ddd;
+                        border-radius: var(--radius);
+                        background: white;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-coins" style="font-size: 1.5rem; margin-bottom: 10px;"></i>
+                        <p>عملات مشفرة</p>
+                    </button>
+                    
+                    <button class="pay-method" data-method="card" style="
+                        padding: 15px;
+                        border: 2px solid #ddd;
+                        border-radius: var(--radius);
+                        background: white;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-credit-card" style="font-size: 1.5rem; margin-bottom: 10px;"></i>
+                        <p>بطاقة ائتمان</p>
+                    </button>
+                    
+                    <button class="pay-method" data-method="transfer" style="
+                        padding: 15px;
+                        border: 2px solid #ddd;
+                        border-radius: var(--radius);
+                        background: white;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-university" style="font-size: 1.5rem; margin-bottom: 10px;"></i>
+                        <p>تحويل بنكي</p>
+                    </button>
                 </div>
-                <button class="modal-product-button">
-                    <i class="fab fa-whatsapp"></i> تواصل عبر الواتساب للطلب
-                </button>
+            </div>
+            
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button id="confirm-payment" style="
+                    padding: 15px 40px;
+                    background: var(--primary);
+                    color: white;
+                    border: none;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">تأكيد الدفع</button>
+                
+                <button id="cancel-payment" style="
+                    padding: 15px 40px;
+                    background: #e2e8f0;
+                    color: var(--dark);
+                    border: none;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">إلغاء</button>
             </div>
         </div>
     `;
     
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    document.body.appendChild(modal);
     
-    // إغلاق النافذة المنبثقة
-    document.querySelector('.modal-close').addEventListener('click', closeModal);
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal();
-        }
+    // إضافة الأحداث
+    modal.querySelector('#cancel-payment').addEventListener('click', () => {
+        document.body.removeChild(modal);
     });
     
-    // زر التواصل عبر الواتساب
-    document.querySelector('.modal-product-button').addEventListener('click', function() {
-        const message = `مرحباً، أريد طلب المنتج: ${product.title} - السعر: ${product.price}`;
-        const whatsappUrl = `https://wa.me/966123456789?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
+    modal.querySelector('#confirm-payment').addEventListener('click', async () => {
+        // هنا سيتم تنفيذ عملية الدفع الفعلية
+        alert('سيتم تنفيذ عملية الدفع قريباً!');
+        document.body.removeChild(modal);
     });
 }
 
-// إغلاق النافذة المنبثقة
-function closeModal() {
-    const modal = document.getElementById('product-modal');
-    modal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-// تهيئة القائمة المتحركة للهواتف
-function initMobileMenu() {
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    const mainNav = document.querySelector('.main-nav');
+// تحميل الإعلانات
+function loadAds() {
+    // A-ADS
+    const aAdsContainer = document.getElementById('a-ads-banner');
+    if (aAdsContainer && window.ADS_CONFIG?.aAds?.code) {
+        aAdsContainer.innerHTML = window.ADS_CONFIG.aAds.code;
+    }
     
-    if (menuBtn && mainNav) {
-        menuBtn.addEventListener('click', function() {
-            mainNav.classList.toggle('active');
-            menuBtn.innerHTML = mainNav.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-        
-    // إغلاق القائمة عند النقر على رابط
-    document.querySelectorAll('.main-nav a').forEach(link => {
-        link.addEventListener('click', function() {
-            mainNav.classList.remove('active');
-            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        });
-    });
-}
+    // Adstera Sidebar
+    const adsteraSidebar = document.getElementById('adstera-sidebar');
+    if (adsteraSidebar && window.ADS_CONFIG?.adstera?.sidebarCode) {
+        adsteraSidebar.innerHTML = window.ADS_CONFIG.adstera.sidebarCode;
+    }
+    
+    // Adstera Footer
+    const adsteraFooter = document.getElementById('adstera-footer');
+    if (adsteraFooter && window.ADS_CONFIG?.adstera?.footerCode) {
+        adsteraFooter.innerHTML = window.ADS_CONFIG.adstera.footerCode;
+    }
 }
 
-// تهيئة الأحداث
-function initEvents() {
-    // تصفية المنتجات
-    const filterSelect = document.getElementById('content-filter');
-    if (filterSelect) {
-        filterSelect.addEventListener('change', function() {
-            // هنا يمكن تطبيق خوارزمية التصفية حسب القيمة المختارة
-            alert(`سيتم تصفية المنتجات حسب: ${this.options[this.selectedIndex].text}`);
+// إعداد الأحداث
+function setupEvents() {
+    // فلتر الأقسام
+    const filter = document.getElementById('category-filter');
+    if (filter) {
+        filter.addEventListener('change', function() {
+            loadProducts(this.value);
         });
     }
     
-    // زر تحميل المزيد
+    // تحميل المزيد
     const loadMoreBtn = document.getElementById('load-more');
     if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
-            // محاكاة تحميل المزيد من المنتجات
-            this.textContent = 'جاري التحميل...';
-            this.disabled = true;
-            
-            setTimeout(() => {
-                // هنا يمكن جلب المزيد من المنتجات من قاعدة البيانات
-                this.textContent = 'تحميل المزيد';
-                this.disabled = false;
-                alert('تم تحميل المزيد من المنتجات');
-            }, 1500);
+        loadMoreBtn.addEventListener('click', () => {
+            // هنا سيتم تحميل المزيد من المنتجات
+            alert('سيتم تحميل المزيد من المنتجات قريباً!');
         });
     }
-    
-    // الانتقال للأقسام من التذييل
-    document.querySelectorAll('[data-category]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const categoryId = this.dataset.category;
-            switchCategory(categoryId);
-            
-            // التمرير لقسم الأقسام
-            document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
-        });
-    });
-    
-    // إغلاق النافذة المنبثقة بالضغط على ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    });
 }
 
-// إدراج الإعلانات
-function insertAds() {
-    // إعلانات A-ADS
-    const aAdsBanner = document.getElementById('a-ads-banner');
-    if (aAdsBanner) {
-        // استبدال العنصر النائب بإعلان A-ADS الفعلي
-        aAdsBanner.innerHTML = `
-            <!-- كود A-ADS -->
-            <!-- استبدل هذا الكود بكود A-ADS الفعلي -->
-            <div style="text-align: center; margin: 0 auto; max-width: 728px;">
-                <img src="https://via.placeholder.com/728x90/6a11cb/ffffff?text=A-ADS+Banner+728x90" alt="إعلان A-ADS" style="max-width: 100%; height: auto; border-radius: 8px;">
-                <p style="font-size: 12px; color: #666; margin-top: 5px;">إعلان A-ADS</p>
-            </div>
-        `;
-    }
-    
-    // إعلانات Adstera
-    const adsteraSidebar = document.getElementById('adstera-sidebar');
-    if (adsteraSidebar) {
-        adsteraSidebar.innerHTML = `
-            <!-- كود Adstera -->
-            <!-- استبدل هذا الكود بكود Adstera الفعلي -->
-            <div style="text-align: center; margin: 0 auto; max-width: 300px;">
-                <img src="https://via.placeholder.com/300x250/2575fc/ffffff?text=Adstera+300x250" alt="إعلان Adstera" style="max-width: 100%; height: auto; border-radius: 8px;">
-                <p style="font-size: 12px; color: #666; margin-top: 5px;">إعلان Adstera</p>
-            </div>
-        `;
-    }
-    
-    const adsteraFooter = document.getElementById('adstera-footer');
-    if (adsteraFooter) {
-        adsteraFooter.innerHTML = `
-            <!-- كود Adstera -->
-            <!-- استبدل هذا الكود بكود Adstera الفعلي -->
-            <div style="text-align: center; margin: 0 auto; max-width: 468px;">
-                <img src="https://via.placeholder.com/468x60/ff4d94/ffffff?text=Adstera+468x60" alt="إعلان Adstera" style="max-width: 100%; height: auto; border-radius: 8px;">
-                <p style="font-size: 12px; color: #666; margin-top: 5px;">إعلان Adstera</p>
-            </div>
-        `;
-    }
-}
+// دالة المساعدة: تنسيق التاريخ
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-SA');
+        }
