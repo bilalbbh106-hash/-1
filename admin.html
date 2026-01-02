@@ -5,23 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم ماسكي - النظام الذكي</title>
     
-    <!-- الروابط -->
+    <!-- الروابط الأساسية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     
+    <!-- تنسيقات لوحة التحكم -->
     <style>
-        :root {
-            --admin-primary: #4f46e5;
-            --admin-secondary: #7c3aed;
-            --admin-dark: #0f172a;
-            --admin-light: #f1f5f9;
-            --admin-success: #10b981;
-            --admin-warning: #f59e0b;
-            --admin-danger: #ef4444;
-            --admin-radius: 12px;
-            --admin-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
+        /* الأنماط الأساسية */
         * {
             margin: 0;
             padding: 0;
@@ -30,129 +20,145 @@
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8fafc;
+            color: #1e293b;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* إخفاء كل شيء في البداية */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* التحميل */
+        #loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            z-index: 9999;
+            color: white;
         }
         
-        .login-container {
-            background: white;
-            border-radius: var(--admin-radius);
-            box-shadow: var(--admin-shadow);
-            padding: 50px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-        
-        .admin-logo {
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--admin-primary), var(--admin-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
         
-        .form-group {
-            margin-bottom: 25px;
-            text-align: right;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--admin-dark);
+        /* رسائل التنبيه */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
         
-        .form-group input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: var(--admin-radius);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-group input:focus {
-            border-color: var(--admin-primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 17px;
-            background: linear-gradient(45deg, var(--admin-primary), var(--admin-secondary));
+        .alert-success {
+            background: #10b981;
             color: white;
-            border: none;
-            border-radius: var(--admin-radius);
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
         
-        .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        .alert-error {
+            background: #ef4444;
+            color: white;
         }
         
-        .error-message {
-            color: var(--admin-danger);
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(239, 68, 68, 0.1);
-            border-radius: 8px;
-            display: none;
+        .alert-info {
+            background: #3b82f6;
+            color: white;
         }
         
-        .admin-info {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-            color: #64748b;
-            font-size: 0.9rem;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-container" id="login-page">
-        <div class="admin-logo">ماسكي</div>
-        <h1 style="margin-bottom: 30px; color: var(--admin-dark);">لوحة التحكم الذكية</h1>
-        <p style="color: #64748b; margin-bottom: 40px;">أدخل كلمة المرور للدخول إلى نظام الإدارة</p>
-        
-        <form id="login-form">
-            <div class="form-group">
-                <label for="admin-password"><i class="fas fa-lock"></i> كلمة المرور</label>
-                <input type="password" id="admin-password" placeholder="أدخل كلمة المرور" required>
-            </div>
-            
-            <button type="submit" class="login-btn">
-                <i class="fas fa-sign-in-alt"></i> دخول المدير
-            </button>
-            
-            <div class="error-message" id="login-error"></div>
-        </form>
-        
-        <div class="admin-info">
-            <p><i class="fas fa-info-circle"></i> كلمة المرور الافتراضية: <strong>Maski2026</strong></p>
-        </div>
+    <!-- شاشة التحميل -->
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        <h2 style="margin-bottom: 10px;">ماسكي</h2>
+        <p>جاري تحميل لوحة التحكم...</p>
     </div>
-
-    <!-- لوحة التحكم الرئيسية (ستظهر بعد التسجيل) -->
-    <div id="admin-dashboard" style="display: none;">
-        <!-- سيقوم JavaScript ببناء لوحة التحكم -->
-    </div>
+    
+    <!-- حاوية الرسائل -->
+    <div id="alert-container"></div>
+    
+    <!-- المحتوى الرئيسي (سيتم إنشاؤه بواسطة JavaScript) -->
+    <div id="app-container"></div>
 
     <!-- المكتبات -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- ملفاتنا -->
     <script src="supabase-config.js"></script>
     <script src="admin-script.js"></script>
+    
+    <script>
+        // إخفاء التحميل بعد 2 ثانية
+        setTimeout(() => {
+            document.getElementById('loading').classList.add('hidden');
+        }, 2000);
+        
+        // دالة لعرض الرسائل
+        window.showAlert = function(message, type = 'info') {
+            const container = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()" style="
+                    background: none;
+                    border: none;
+                    color: inherit;
+                    margin-right: auto;
+                    cursor: pointer;
+                ">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(alert);
+            
+            // إزالة الرسالة بعد 5 ثواني
+            setTimeout(() => {
+                if (alert.parentElement) {
+                    alert.remove();
+                }
+            }, 5000);
+        };
+    </script>
 </body>
     </html>
